@@ -14,7 +14,6 @@ body {
   justify-content: space-between;
   padding: 1rem 2rem;
   background: rgba(255, 0, 255, 0.2);
-  backdrop-filter: blur(6px);
   border-bottom: 2px solid #ff00ff;
 }
 
@@ -47,7 +46,6 @@ body {
   background: rgba(255, 0, 255, 0.25);
   border-radius: 1rem;
   padding: 1rem;
-  backdrop-filter: none;
   overflow: hidden;
   visibility: hidden;
   transition: all 0.4s ease;
