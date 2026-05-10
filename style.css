@@ -3,8 +3,7 @@
 
 body {
     font-family: "Comic Neue", "Comic Sans MS", cursive;
-    background: #0d0d0d url("./hellfire.gif") no-repeat center center fixed;
-    background-size: cover;
+    background: #0d0d0d;
     margin: 0;
     padding: 0;
     color: white;
