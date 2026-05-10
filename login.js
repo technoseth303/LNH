@@ -2,7 +2,7 @@
 async function loadUsers() {
     const response = await fetch("user.users");
     const data = await response.json();
-    return data.users; // custom structure
+    return data.users;
 }
 
 // Local login logic
