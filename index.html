@@ -7,16 +7,25 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <header class="header">
     <h1 class="title">LNH Homework Portal</h1>
     <button id="settings_button" class="settings_button">Settings ⚙️</button>
   </header>
 
-  <!-- LN LOGIN -->
-  <div id="login" class="overlay visible">
-    <h2>Sign in to Languagenut</h2>
-    <input class="login_field" id="username_input" type="text" placeholder="Username">
-    <input class="login_field" id="password_input" type="password" placeholder="Password">
+  <!-- LOCAL LOGIN FIRST -->
+  <div id="local_login" class="overlay visible">
+    <h2>Local Login</h2>
+    <input class="login_field" id="local_user" type="text" placeholder="local username">
+    <input class="login_field" id="local_pass" type="password" placeholder="local password">
+    <button class="login_field" id="local_login_btn">Unlock</button>
+  </div>
+
+  <!-- LN LOGIN (hidden until local login succeeds) -->
+  <div id="login" class="overlay">
+    <h2>Languagenut Login</h2>
+    <input class="login_field" id="username_input" type="text" placeholder="LN username">
+    <input class="login_field" id="password_input" type="password" placeholder="LN password">
     <button class="login_field" id="login_btn">Log In</button>
   </div>
 
@@ -47,6 +56,8 @@
     Current speed: <span id="speed_display"></span>
   </dialog>
 
-  <script src="index.js"></script>
+  <!-- SCRIPTS -->
+  <script src="login.js"></script>   <!-- NEW local login logic -->
+  <script src="index.js"></script>   <!-- ORIGINAL LN logic -->
 </body>
 </html>
