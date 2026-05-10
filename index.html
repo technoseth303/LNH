@@ -13,15 +13,15 @@
     <button id="settings_button" class="settings_button">Settings ⚙️</button>
   </header>
 
-  <!-- LOCAL LOGIN FIRST -->
-  <div id="local_login" class="overlay visible">
+  <!-- LOCAL LOGIN (always on top) -->
+  <div id="local_login" class="overlay visible top_layer">
     <h2>Local Login</h2>
     <input class="login_field" id="local_user" type="text" placeholder="Local username">
     <input class="login_field" id="local_pass" type="password" placeholder="Local password">
     <button class="login_field" id="local_login_btn">Unlock</button>
   </div>
 
-  <!-- LN LOGIN (hidden until local login succeeds) -->
+  <!-- LN LOGIN -->
   <div id="login" class="overlay">
     <h2>Languagenut Login</h2>
     <input class="login_field" id="username_input" type="text" placeholder="LN username">
@@ -56,7 +56,6 @@
     Current speed: <span id="speed_display"></span>
   </dialog>
 
-  <!-- SCRIPTS -->
   <script src="login.js"></script>
   <script src="index.js"></script>
 </body>
