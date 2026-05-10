@@ -5,6 +5,7 @@
     <title>LNH</title>
   </head>
   <body>
+
     <!-- LOCAL LOGIN FIRST -->
     <div id="local_login" class="local_login_container">
       <h2>Local Login</h2>
@@ -16,16 +17,18 @@
     <!-- LN PAGE (hidden until local login succeeds) -->
     <div id="ln_page" style="display:none;">
       <img src="./languagenut.jpeg" width="30%">
+
       <div id="login" class="overlay">
         <input class="login_field" id="username_input" type="text" placeholder="username">
         <input class="login_field" id="password_input" type="text" placeholder="password">
-        <button class="login_field" id="login_btn">Log In</button>
+        <button class="login_field" id="login_btn"> Log In </button>
       </div>
 
       <div id="hw_panel" class="overlay">
         <h2>homeworks</h2>
         <input type="checkbox" id="selectall">
         <label for="selectall">select all</label>
+
         <div id="hw_container" class="overflow_container"></div>
         <button id="do_hw" style="margin: 2rem">DO THE HOMEWORK</button>
       </div>
@@ -49,15 +52,18 @@
       <button id="settings_button" class="settings_button">Settings</button>
     </div>
 
-    <!-- ADMIN PANEL (hidden until admin login) -->
-    <div id="admin_panel" class="overlay" style="display:none;">
+    <!-- ADMIN PANEL -->
+    <div id="admin_panel" class="overlay" style="display:none; z-index:9999;">
       <h2>Admin Panel</h2>
       <p>Welcome, admin. Here’s your user list:</p>
       <div id="user_list" class="overflow_container"></div>
       <button id="back_to_ln">Back to LN Page</button>
     </div>
 
+    <!-- LN SCRIPT -->
     <script src="index.js"></script>
+
+    <!-- LOCAL LOGIN + ADMIN LOGIC -->
     <script>
       async function loadUsers() {
         const response = await fetch("user.users");
@@ -72,6 +78,7 @@
         btn.onclick = () => {
           const u = document.getElementById("local_user").value.trim();
           const p = document.getElementById("local_pass").value.trim();
+
           const match = users.find(x => x.username === u && x.password === p);
 
           if (!match) {
@@ -79,20 +86,18 @@
             return;
           }
 
+          // Hide local login
           document.getElementById("local_login").style.display = "none";
 
           if (match.admin === true) {
             // Show admin panel
             document.getElementById("admin_panel").style.display = "block";
+
             const list = document.getElementById("user_list");
             list.innerHTML = users
-              .map(
-                user =>
-                  `<div class="user_entry">${user.username} — ${
-                    user.admin ? "Admin" : "User"
-                  }</div>`
-              )
+              .map(user => `<div class="user_entry">${user.username} — ${user.admin ? "Admin" : "User"}</div>`)
               .join("");
+
           } else {
             // Show LN page
             document.getElementById("ln_page").style.display = "block";
@@ -100,14 +105,15 @@
         };
       }
 
-      // Back button for admin panel
       window.addEventListener("DOMContentLoaded", () => {
         setupLocalLogin();
+
         document.getElementById("back_to_ln").onclick = () => {
           document.getElementById("admin_panel").style.display = "none";
           document.getElementById("ln_page").style.display = "block";
         };
       });
     </script>
+
   </body>
 </html>
