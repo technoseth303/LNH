@@ -22,9 +22,8 @@ async function setupLocalLogin() {
             return;
         }
 
-        alert(`Welcome, ${u}!`);
-        // You can redirect or load your main app here
-        // window.location.href = "main.html";
+        // Redirect to LN homework page
+        window.location.href = "index.html"; // change if your LN page has a different filename
     };
 }
 
