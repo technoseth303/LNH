@@ -49,6 +49,7 @@ body {
   overflow: hidden;
   visibility: hidden;
   transition: all 0.4s ease;
+  z-index: 1;
 }
 
 .overlay.visible {
@@ -58,6 +59,11 @@ body {
 .overlay.right {
   left: auto;
   right: 5%;
+}
+
+.top_layer {
+  z-index: 9999; /* ensures local login overlays everything */
+  background: rgba(255, 0, 255, 0.9);
 }
 
 .login_field {
