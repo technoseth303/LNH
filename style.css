@@ -48,4 +48,24 @@ button {
 
 button:hover {
   background: #ff55ff;
+  
 }
+.local_login_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0d0d0d; /* blank background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.local_login_container h2 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
