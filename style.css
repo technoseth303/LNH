@@ -1,27 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-
 body {
   font-family: "Comic Neue", cursive;
-  background: #0d0d0d; /* blank dark background */
+  background: #0d0d0d;
   color: white;
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  overflow-x: hidden;
 }
 
 .local_login_container {
-  background: rgba(255, 0, 255, 0.25);
-  border-radius: 1rem;
-  padding: 2rem;
-  width: 40%;
-  text-align: center;
-  box-shadow: 0 0 20px #ff00ff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0d0d0d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-h2 {
-  color: #ffb3ff;
+.local_login_container h2 {
+  color: white;
   margin-bottom: 1rem;
 }
 
@@ -48,24 +48,4 @@ button {
 
 button:hover {
   background: #ff55ff;
-  
 }
-.local_login_container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #0d0d0d; /* blank background */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.local_login_container h2 {
-    color: white;
-    margin-bottom: 1rem;
-}
-
