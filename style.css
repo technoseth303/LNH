@@ -2,79 +2,86 @@
 @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
 
 body {
-    font-family: "Comic Neue", "Comic Sans MS", cursive;
-    background: #0d0d0d;
-    margin: 0;
-    padding: 0;
-    color: white;
+  font-family: "Comic Neue", "Comic Sans MS", cursive;
+  background: #0d0d0d;
+  margin: 0;
+  padding: 0;
+  color: white;
 }
 
 .overlay {
-    position: fixed;
-    top: 10%;
-    left: 5%;
-    width: 40%;
-    height: 75%;
-    background: rgba(255,0,255,0.35);
-    border-radius: 1rem;
-    padding: 1rem;
-    visibility: hidden;
-    backdrop-filter: blur(4px);
+  position: fixed;
+  top: 10%;
+  left: 5%;
+  width: 40%;
+  height: 75%;
+  background: rgba(255,0,255,0.35);
+  border-radius: 1rem;
+  padding: 1rem;
+  visibility: hidden;
+  backdrop-filter: blur(4px);
 }
 
 .overflow_container {
-    max-height: 16em;
-    overflow-y: auto;
-    padding-right: 0.5rem;
+  max-height: 16em;
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
 .progress_bar {
-    width: 0%;
-    height: 1rem;
-    background: #00ff00;
-    border-radius: 0.3rem;
+  width: 0%;
+  height: 1rem;
+  background: #00ff00;
+  border-radius: 0.3rem;
 }
 
 .settings_button {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.8rem 1.2rem;
-    background: #ff00ff;
-    border-radius: 0.4rem;
-    border: none;
-    color: white;
-    cursor: pointer;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: #ff00ff;
+  border-radius: 0.4rem;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
 .json_small {
-    font-family: "Space Mono", monospace;
-    font-size: 0.75rem;
-    background: rgba(0,0,0,0.4);
-    padding: 0.5rem;
-    border-radius: 0.4rem;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  background: rgba(0,0,0,0.4);
+  padding: 0.5rem;
+  border-radius: 0.4rem;
 }
 
 .login_field {
-    display: block;
-    width: 90%;
-    margin: 0.5rem auto;
-    padding: 0.6rem;
-    border-radius: 0.4rem;
-    border: none;
+  display: block;
+  width: 90%;
+  margin: 0.5rem auto;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  border: none;
 }
 
 button {
-    padding: 0.7rem 1.2rem;
-    border-radius: 0.4rem;
-    border: none;
-    background: #ff00ff;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.4rem;
+  border: none;
+  background: #ff00ff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 button:hover {
-    background: #ff55ff;
+  background: #ff55ff;
+}
+
+/* Blur effect for locked panels */
+.blurred {
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0.7;
 }
