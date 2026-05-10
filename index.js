@@ -170,6 +170,10 @@ class client_application {
     constructor() {
         this.username_box = document.getElementById("username_input");
         this.password_box = document.getElementById("password_input");
+
+        this.local_user = document.getElementById("local_user");
+        this.local_pass = document.getElementById("local_pass");
+
         this.module_translations = [];
         this.display_translations = [];
         this.homeworks = [];
@@ -204,28 +208,32 @@ class client_application {
     }
 
     main() {
-        this.show_box("login");
+        this.show_box("local_login");
         this.load_local_users();
 
-        document.getElementById("login_btn").onclick = async () => {
-
-            const u = this.username_box.value;
-            const p = this.password_box.value;
+        document.getElementById("local_login_btn").onclick = () => {
+            const u = this.local_user.value;
+            const p = this.local_pass.value;
 
             const match = this.local_users.find(
                 x => x.username === u && x.password === p
             );
 
             if (!match) {
-                alert("Incorrect username or password");
+                alert("Incorrect local login");
                 return;
             }
 
+            this.hide_box("local_login");
+            this.show_box("login");
+        };
+
+        document.getElementById("login_btn").onclick = async () => {
             const response = await this.call_lnut(
                 "loginController/attemptLogin",
                 {
-                    username: u,
-                    pass: p,
+                    username: this.username_box.value,
+                    pass: this.password_box.value,
                 }
             );
 
@@ -429,3 +437,19 @@ class client_application {
             {
                 token: this.token,
             }
+        );
+        this.module_translations = this.module_translations.translations;
+    }
+
+    async get_hwks() {
+        return await this.call_lnut(
+            "assignmentController/getViewableAll",
+            {
+                token: this.token,
+            }
+        );
+    }
+}
+
+app = new client_application();
+app.main();
