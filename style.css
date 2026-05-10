@@ -2,68 +2,27 @@
 
 body {
   font-family: "Comic Neue", cursive;
-  background: #0d0d0d;
+  background: #0d0d0d; /* blank dark background */
   color: white;
   margin: 0;
-  overflow-x: hidden;
-}
-
-.header {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: rgba(255, 0, 255, 0.2);
-  border-bottom: 2px solid #ff00ff;
+  height: 100vh;
 }
 
-.title {
-  font-size: 1.8rem;
-  color: #ffb3ff;
-}
-
-.settings_button {
-  background: #ff00ff;
-  color: white;
-  border: none;
-  border-radius: 0.4rem;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.settings_button:hover {
-  background: #ff55ff;
-}
-
-.overlay {
-  position: fixed;
-  top: 10%;
-  left: 5%;
-  width: 40%;
-  height: 75%;
+.local_login_container {
   background: rgba(255, 0, 255, 0.25);
   border-radius: 1rem;
-  padding: 1rem;
-  overflow: hidden;
-  visibility: hidden;
-  transition: all 0.4s ease;
-  z-index: 1;
+  padding: 2rem;
+  width: 40%;
+  text-align: center;
+  box-shadow: 0 0 20px #ff00ff;
 }
 
-.overlay.visible {
-  visibility: visible;
-}
-
-.overlay.right {
-  left: auto;
-  right: 5%;
-}
-
-.top_layer {
-  z-index: 9999; /* ensures local login overlays everything */
-  background: rgba(255, 0, 255, 0.9);
+h2 {
+  color: #ffb3ff;
+  margin-bottom: 1rem;
 }
 
 .login_field {
@@ -89,18 +48,4 @@ button {
 
 button:hover {
   background: #ff55ff;
-}
-
-.overflow_container {
-  max-height: 16em;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
-
-.progress_bar {
-  width: 0%;
-  height: 1rem;
-  background: linear-gradient(90deg, #00ff00, #00ffff);
-  border-radius: 0.3rem;
-  transition: width 0.3s ease;
 }
