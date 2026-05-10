@@ -208,9 +208,29 @@ class client_application {
     }
 
     main() {
-        this.show_box("local_login");
+        // LN login first
+        this.show_box("login");
         this.load_local_users();
 
+        // LN login button
+        document.getElementById("login_btn").onclick = async () => {
+            const response = await this.call_lnut(
+                "loginController/attemptLogin",
+                {
+                    username: this.username_box.value,
+                    pass: this.password_box.value,
+                }
+            );
+
+            this.token = response.newToken;
+
+            if (this.token !== undefined) {
+                this.hide_box("login");
+                this.show_box("local_login");
+            }
+        };
+
+        // Local login unlocks blur
         document.getElementById("local_login_btn").onclick = () => {
             const u = this.local_user.value;
             const p = this.local_pass.value;
@@ -224,49 +244,19 @@ class client_application {
                 return;
             }
 
+            // Remove blur
+            document.getElementById("hw_panel").classList.remove("blurred");
+            document.getElementById("log_panel").classList.remove("blurred");
+
             this.hide_box("local_login");
-            this.show_box("login");
+
+            this.show_box("hw_panel");
+            this.show_box("log_panel");
+
+            this.get_module_translations();
+            this.get_display_translations();
+            this.display_hwks();
         };
-
-        document.getElementById("login_btn").onclick = async () => {
-            const response = await this.call_lnut(
-                "loginController/attemptLogin",
-                {
-                    username: this.username_box.value,
-                    pass: this.password_box.value,
-                }
-            );
-
-            this.token = response.newToken;
-
-            if (this.token !== undefined) this.on_log_in();
-        };
-    }
-
-    on_log_in() {
-        this.hide_box("login");
-        this.show_box("hw_panel");
-        this.show_box("log_panel");
-
-        document.getElementById("do_hw").onclick = () => {
-            this.do_hwks();
-        };
-
-        this.get_module_translations();
-        this.get_display_translations();
-        this.display_hwks();
-    }
-
-    get_task_name(task) {
-        let name = task.verb_name;
-
-        if (task.module_translations !== undefined)
-            name = this.module_translations[task.module_translations[0]];
-
-        if (task.module_translation !== undefined)
-            name = this.module_translations[task.module_translation];
-
-        return name;
     }
 
     async display_hwks() {
