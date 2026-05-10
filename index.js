@@ -434,4 +434,3 @@ class client_application {
 
 app = new client_application();
 app.main();
-
