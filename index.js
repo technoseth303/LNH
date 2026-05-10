@@ -1,12 +1,12 @@
 speed = 10000;
+
 document.getElementById("settings_button").addEventListener("click", () => {
     document.getElementById("settings").showModal();
 });
+
 speed_input = document.getElementById("speed_slider");
 speed_input.oninput = function () {
-    console.log("change", this);
     speed = 10 ** this.value;
-    console.log(speed, this.value);
     document.getElementById("speed_display").innerText = secondsToString(speed);
 };
 
@@ -20,19 +20,16 @@ function secondsToString(seconds) {
 }
 
 function set_checkboxes(node, state) {
-    console.log(node);
     const container = document.getElementById(node);
     for (const checkbox of container.querySelectorAll("input[type=checkbox]")) {
         checkbox.checked = state;
     }
 }
 
-// from https://gist.github.com/jzohrab/a6701d0087edca8303ec069826ec4b14
 async function asyncPool(array, poolSize) {
     const result = [];
     const pool = [];
 
-    // Promises leave the pool when they're resolved.
     function leavePool(e) {
         pool.splice(pool.indexOf(e), 1);
     }
@@ -54,12 +51,9 @@ class task_completer {
 
         this.mode = this.get_task_type();
         this.to_language = ietf;
-        this.cataloguid;
 
         this.homework_id = task.base[0];
-        this.catalog_uid = task.catalog_uid;
-        if (this.catalog_uid === undefined)
-            this.catalog_uid = task.base[task.base.length - 1];
+        this.catalog_uid = task.catalog_uid ?? task.base[task.base.length - 1];
         this.rel_module_uid = task.rel_module_uid;
         this.game_uid = task.game_uid;
         this.game_type = task.type;
@@ -67,24 +61,20 @@ class task_completer {
 
     async complete() {
         const answers = await this.get_data();
-        console.log(answers);
         await this.send_answers(answers);
     }
+
     async get_data() {
-        let vocabs;
-        if (this.mode === "sentence") vocabs = await this.get_sentences();
-        if (this.mode === "verbs") vocabs = await this.get_verbs();
-        if (this.mode === "phonics") vocabs = await this.get_phonics();
-        if (this.mode === "exam") vocabs = await this.get_exam();
-        if (this.mode === "vocabs") vocabs = await this.get_vocabs();
-        return vocabs;
+        if (this.mode === "sentence") return await this.get_sentences();
+        if (this.mode === "verbs") return await this.get_verbs();
+        if (this.mode === "phonics") return await this.get_phonics();
+        if (this.mode === "exam") return await this.get_exam();
+        return await this.get_vocabs();
     }
+
     async send_answers(vocabs) {
-        console.log(vocabs);
-        if (vocabs === undefined || vocabs.length === 0) {
-            console.log("No vocabs found, skipping sending answers.");
-            return; // Stop the function if no vocabs are found
-        }
+        if (!vocabs || vocabs.length === 0) return;
+
         const data = {
             moduleUid: this.catalog_uid,
             gameUid: this.game_uid,
@@ -93,112 +83,81 @@ class task_completer {
             toietf: this.to_language,
             fromietf: "en-US",
             score: vocabs.length * 200,
-            correctVocabs: vocabs.map((x) => x.uid).join(","),
+            correctVocabs: vocabs.map(x => x.uid).join(","),
             incorrectVocabs: [],
             homeworkUid: this.homework_id,
             isSentence: this.mode === "sentence",
-            isALevel: false,
             isVerb: this.mode === "verbs",
             verbUid: this.mode === "verbs" ? this.catalog_uid : "",
             phonicUid: this.mode === "phonics" ? this.catalog_uid : "",
             sentenceScreenUid: this.mode === "sentence" ? 100 : "",
-
-            sentenceCatalogUid:
-                this.mode === "sentence" ? this.catalog_uid : "",
+            sentenceCatalogUid: this.mode === "sentence" ? this.catalog_uid : "",
             grammarCatalogUid: this.catalog_uid,
-            isGrammar: false,
             isExam: this.mode === "exam",
-            correctStudentAns: "",
-            incorrectStudentAns: "",
-            timeStamp:
-                Math.floor(speed + ((Math.random() - 0.5) / 10) * speed) * 1000,
+            timeStamp: Math.floor(speed + ((Math.random() - 0.5) / 10) * speed) * 1000,
             vocabNumber: vocabs.length,
             rel_module_uid: this.task.rel_module_uid,
             dontStoreStats: true,
             product: "secondary",
             token: this.token,
         };
-        console.log(data);
-        const response = await this.call_lnut(
-            "gameDataController/addGameScore",
-            data,
-        );
-        return response;
+
+        return await this.call_lnut("gameDataController/addGameScore", data);
     }
 
     async get_verbs() {
-        const vocabs = await this.call_lnut(
-            "verbTranslationController/getVerbTranslations",
-            {
-                verbUid: this.catalog_uid,
-                toLanguage: this.to_language,
-                fromLanguage: "en-US",
-                token: this.token,
-            },
-        );
-        return vocabs.verbTranslations;
+        return (await this.call_lnut("verbTranslationController/getVerbTranslations", {
+            verbUid: this.catalog_uid,
+            toLanguage: this.to_language,
+            fromLanguage: "en-US",
+            token: this.token,
+        })).verbTranslations;
     }
+
     async get_phonics() {
-        const vocabs = await this.call_lnut(
-            "phonicsController/getPhonicsData",
-            {
-                phonicCatalogUid: this.catalog_uid,
-                toLanguage: this.to_language,
-                fromLanguage: "en-US",
-                token: this.token,
-            },
-        );
-        return vocabs.phonics;
+        return (await this.call_lnut("phonicsController/getPhonicsData", {
+            phonicCatalogUid: this.catalog_uid,
+            toLanguage: this.to_language,
+            fromLanguage: "en-US",
+            token: this.token,
+        })).phonics;
     }
+
     async get_sentences() {
-        const vocabs = await this.call_lnut(
-            "sentenceTranslationController/getSentenceTranslations",
-            {
-                catalogUid: this.catalog_uid,
-                toLanguage: this.to_language,
-                fromLanguage: "en-US",
-                token: this.token,
-            },
-        );
-        return vocabs.sentenceTranslations;
+        return (await this.call_lnut("sentenceTranslationController/getSentenceTranslations", {
+            catalogUid: this.catalog_uid,
+            toLanguage: this.to_language,
+            fromLanguage: "en-US",
+            token: this.token,
+        })).sentenceTranslations;
     }
+
     async get_exam() {
-        console.log(this.catalog_uid);
-        const vocabs = await this.call_lnut(
-            "examTranslationController/getExamTranslationsCorrect",
-            {
-                gameUid: this.game_uid,
-                examUid: this.catalog_uid,
-                toLanguage: this.to_language,
-                fromLanguage: "en-US",
-                token: this.token,
-            },
-        );
-        return vocabs.examTranslations;
+        return (await this.call_lnut("examTranslationController/getExamTranslationsCorrect", {
+            gameUid: this.game_uid,
+            examUid: this.catalog_uid,
+            toLanguage: this.to_language,
+            fromLanguage: "en-US",
+            token: this.token,
+        })).examTranslations;
     }
+
     async get_vocabs() {
-        const vocabs = await this.call_lnut(
-            "vocabTranslationController/getVocabTranslations",
-            {
-                "catalogUid[]": this.catalog_uid,
-                toLanguage: this.to_language,
-                fromLanguage: "en-US",
-                token: this.token,
-            },
-        );
-        return vocabs.vocabTranslations;
+        return (await this.call_lnut("vocabTranslationController/getVocabTranslations", {
+            "catalogUid[]": this.catalog_uid,
+            toLanguage: this.to_language,
+            fromLanguage: "en-US",
+            token: this.token,
+        })).vocabTranslations;
     }
 
     async call_lnut(url, data) {
         const url_data = new URLSearchParams(data).toString();
-        const response = await fetch(
-            `https://api.languagenut.com/${url}?${url_data}`,
-        );
-        const json = await response.json();
-        return json;
+        const response = await fetch(`https://api.languagenut.com/${url}?${url_data}`);
+        return await response.json();
     }
+
     get_task_type() {
-        console.log(this.task);
         if (this.task.gameLink.includes("sentenceCatalog")) return "sentence";
         if (this.task.gameLink.includes("verbUid")) return "verbs";
         if (this.task.gameLink.includes("phonicCatalogUid")) return "phonics";
@@ -214,12 +173,19 @@ class client_application {
         this.module_translations = [];
         this.display_translations = [];
         this.homeworks = [];
+        this.local_users = [];
+    }
+
+    async load_local_users() {
+        const response = await fetch("users.json");
+        const data = await response.json();
+        this.local_users = data.users;
     }
 
     hide_all() {
         const divsToHide = document.getElementsByClassName("overlay");
         for (let i = 0; i < divsToHide.length; i++) {
-            divsToHide[i].style.visibility = "hidden"; // or
+            divsToHide[i].style.visibility = "hidden";
         }
     }
 
@@ -233,24 +199,38 @@ class client_application {
 
     async call_lnut(url, data) {
         const url_data = new URLSearchParams(data).toString();
-        const response = await fetch(
-            `https://api.languagenut.com/${url}?${url_data}`,
-        );
-        const json = await response.json();
-        return json;
+        const response = await fetch(`https://api.languagenut.com/${url}?${url_data}`);
+        return await response.json();
     }
 
     main() {
         this.show_box("login");
+        this.load_local_users();
+
         document.getElementById("login_btn").onclick = async () => {
+
+            const u = this.username_box.value;
+            const p = this.password_box.value;
+
+            const match = this.local_users.find(
+                x => x.username === u && x.password === p
+            );
+
+            if (!match) {
+                alert("Incorrect username or password");
+                return;
+            }
+
             const response = await this.call_lnut(
                 "loginController/attemptLogin",
                 {
-                    username: this.username_box.value,
-                    pass: this.password_box.value,
-                },
+                    username: u,
+                    pass: p,
+                }
             );
+
             this.token = response.newToken;
+
             if (this.token !== undefined) this.on_log_in();
         };
     }
@@ -259,9 +239,11 @@ class client_application {
         this.hide_box("login");
         this.show_box("hw_panel");
         this.show_box("log_panel");
+
         document.getElementById("do_hw").onclick = () => {
-            app.do_hwks();
+            this.do_hwks();
         };
+
         this.get_module_translations();
         this.get_display_translations();
         this.display_hwks();
@@ -270,13 +252,11 @@ class client_application {
     get_task_name(task) {
         let name = task.verb_name;
 
-        if (task.module_translations !== undefined) {
+        if (task.module_translations !== undefined)
             name = this.module_translations[task.module_translations[0]];
-        }
 
-        if (task.module_translation !== undefined) {
+        if (task.module_translation !== undefined)
             name = this.module_translations[task.module_translation];
-        }
 
         return name;
     }
@@ -285,45 +265,55 @@ class client_application {
         const homeworks = await this.get_hwks();
         const panel = document.getElementById("hw_container");
         panel.innerHTML = "";
+
         this.homeworks = homeworks.homework;
         this.homeworks.reverse();
-        console.log(homeworks);
 
         const selbutton = document.getElementById("selectall");
-        selbutton.onclick = function select_checkbox() {
+        selbutton.onclick = function () {
             const selallcheckbox = document.getElementsByName("boxcheck");
             for (const checkbox of selallcheckbox)
                 checkbox.checked = this.checked;
         };
+
         let hw_idx = 0;
+
         for (const homework of this.homeworks) {
             const { hw_name, hw_display } =
                 this.create_homework_elements(homework, hw_idx);
+
             panel.appendChild(hw_name);
             panel.appendChild(hw_display);
 
             hw_idx++;
         }
     }
+
     create_homework_elements(homework, hw_idx) {
         const hw_checkbox = document.createElement("input");
         hw_checkbox.type = "checkbox";
         hw_checkbox.name = "boxcheck";
         hw_checkbox.onclick = function () {
-            set_checkboxes(this.parentNode.nextElementSibling.id, this.checked);
+            set_checkboxes(
+                this.parentNode.nextElementSibling.id,
+                this.checked
+            );
         };
-        const hw_name = document.createElement("span");
-        hw_name.innerText = `${homework.name}`;
-        hw_name.style.display = "block";
 
+        const hw_name = document.createElement("span");
+        hw_name.innerText = homework.name;
+        hw_name.style.display = "block";
         hw_name.prepend(hw_checkbox);
 
         const hw_display = document.createElement("div");
         hw_display.id = `hw${homework.id}`;
+
         let idx = 0;
+
         for (const task of homework.tasks) {
             const { task_span, task_checkbox, task_display } =
                 this.create_task_elements(task, hw_idx, idx);
+
             task_span.appendChild(task_checkbox);
             task_span.appendChild(task_display);
             task_span.appendChild(document.createElement("br"));
@@ -332,8 +322,9 @@ class client_application {
             idx++;
         }
 
-        return { hw_name: hw_name, hw_display: hw_display };
+        return { hw_name, hw_display };
     }
+
     create_task_elements(task, hw_idx, idx) {
         const task_checkbox = document.createElement("input");
         task_checkbox.type = "checkbox";
@@ -342,62 +333,83 @@ class client_application {
 
         const task_display = document.createElement("label");
         task_display.for = task_checkbox.id;
-        const percentage = task.gameResults ? task.gameResults.percentage : "-";
-        task_display.innerHTML = `${this.display_translations[task.translation]} - ${this.get_task_name(task)} (${percentage}%)`;
+
+        const percentage = task.gameResults
+            ? task.gameResults.percentage
+            : "-";
+
+        task_display.innerHTML =
+            `${this.display_translations[task.translation]} - ` +
+            `${this.get_task_name(task)} (${percentage}%)`;
 
         const task_span = document.createElement("span");
-
         task_span.classList.add("task");
 
         return {
-            task_span: task_span,
-            task_checkbox: task_checkbox,
-            task_display: task_display,
+            task_span,
+            task_checkbox,
+            task_display,
         };
     }
 
     async do_hwks() {
         const checkboxes = document.querySelectorAll(
-            ".task > input[type=checkbox]:checked",
+            ".task > input[type=checkbox]:checked"
         );
+
         const logs = document.getElementById("log_container");
         logs.innerHTML = `doing ${checkboxes.length} tasks...<br>`;
+
         const progress_bar = document.getElementById("hw_bar");
         let task_id = 1;
         let progress = 0;
         progress_bar.style.width = "0%";
+
         const funcs = [];
+
         for (const c of checkboxes) {
             const parts = c.id.split("-");
             const task = this.homeworks[parts[0]].tasks[parts[1]];
+
             const task_doer = new task_completer(
                 this.token,
                 task,
-                this.homeworks[parts[0]].languageCode,
+                this.homeworks[parts[0]].languageCode
             );
-            funcs.push((x) =>
+
+            funcs.push(() =>
                 (async (id) => {
                     const answers = await task_doer.get_data();
-                    if (answers === undefined || answers.length === 0) {
-                        console.log(
-                            "No answers found, skipping sending answers.",
-                        );
-                        return; // Stop the function if no answers are found
+
+                    if (!answers || answers.length === 0) {
+                        console.log("No answers found, skipping.");
+                        return;
                     }
+
                     logs.innerHTML += `<b>fetched vocabs for task ${id}</b>`;
-                    logs.innerHTML += `<div class="json_small">${JSON.stringify(answers)}</div>`;
-                    progress += 1;
-                    progress_bar.style.width = `${String((progress / checkboxes.length) * 0.5 * 100)}%`;
-                    console.log("Calling send_answers with answers:", answers);
+                    logs.innerHTML += `<div class="json_small">${JSON.stringify(
+                        answers
+                    )}</div>`;
+
+                    progress++;
+                    progress_bar.style.width =
+                        `${(progress / (checkboxes.length * 2)) * 100}%`;
+
                     const result = await task_doer.send_answers(answers);
+
                     logs.innerHTML += `<b>task ${id} done, scored ${result.score}</b>`;
-                    logs.innerHTML += `<div class="json_small">${JSON.stringify(result)}</div>`;
+                    logs.innerHTML += `<div class="json_small">${JSON.stringify(
+                        result
+                    )}</div>`;
                     logs.scrollTop = logs.scrollHeight;
-                    progress += 1;
-                    progress_bar.style.width = `${String((progress / checkboxes.length) * 0.5 * 100)}%`;
-                })(task_id++),
+
+                    progress++;
+                    progress_bar.style.width =
+                        `${(progress / (checkboxes.length * 2)) * 100}%`;
+                })(task_id++)
             );
         }
+
         asyncPool(funcs, 5).then(() => {
             this.display_hwks();
         });
@@ -406,7 +418,7 @@ class client_application {
     async get_display_translations() {
         this.display_translations = await this.call_lnut(
             "publicTranslationController/getTranslations",
-            {},
+            {}
         );
         this.display_translations = this.display_translations.translations;
     }
@@ -416,21 +428,4 @@ class client_application {
             "translationController/getUserModuleTranslations",
             {
                 token: this.token,
-            },
-        );
-        this.module_translations = this.module_translations.translations;
-    }
-
-    async get_hwks() {
-        const homeworks = await this.call_lnut(
-            "assignmentController/getViewableAll",
-            {
-                token: this.token,
-            },
-        );
-        return homeworks;
-    }
-}
-
-app = new client_application();
-app.main();
+            }
