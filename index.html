@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LNH Portal</title>
+  <title>LNH Homework Portal</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="header">
-    <img src="./languagenut.jpeg" class="logo" alt="Languagenut Logo">
     <h1 class="title">LNH Homework Portal</h1>
     <button id="settings_button" class="settings_button">Settings ⚙️</button>
   </header>
 
-  <!-- LOGIN PANEL -->
+  <!-- LN LOGIN -->
   <div id="login" class="overlay visible">
     <h2>Sign in to Languagenut</h2>
     <input class="login_field" id="username_input" type="text" placeholder="Username">
@@ -24,28 +23,28 @@
   <!-- HOMEWORK PANEL -->
   <div id="hw_panel" class="overlay blurred">
     <h2>Assignments</h2>
-    <div class="controls">
-      <input type="checkbox" id="selectall">
-      <label for="selectall">Select all</label>
-      <button id="do_hw">Complete Selected</button>
-    </div>
+    <input type="checkbox" id="selectall">
+    <label for="selectall">Select all</label>
     <div id="hw_container" class="overflow_container"></div>
+    <button id="do_hw" style="margin: 2rem">DO THE HOMEWORK</button>
   </div>
 
   <!-- LOG PANEL -->
   <div id="log_panel" class="overlay blurred right">
     <h2>Logs</h2>
     <div id="hw_bar" class="progress_bar"></div>
+    <br>
     <div id="log_container" class="overflow_container"></div>
   </div>
 
   <!-- SETTINGS -->
   <dialog id="settings">
-    <h3>Settings</h3>
-    <p>Adjust homework completion speed:</p>
+    [Esc] to exit
+    <br><br>
+    Select the time you want your homework to appear to be done in:
     <input type="range" min="-3" max="18" value="2" id="speed_slider" step="0.1">
-    <p>Current speed: <span id="speed_display"></span></p>
-    <small>Press [Esc] to close</small>
+    <br><br>
+    Current speed: <span id="speed_display"></span>
   </dialog>
 
   <footer class="footer">
