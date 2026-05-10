@@ -1,21 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LNH Local Login</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <title>LNH</title>
+    <body>
 
-  <!-- LOCAL LOGIN ONLY -->
-  <div id="local_login" class="local_login_container">
-    <h2>Local Login</h2>
-    <input class="login_field" id="local_user" type="text" placeholder="Local username">
-    <input class="login_field" id="local_pass" type="password" placeholder="Local password">
-    <button class="login_field" id="local_login_btn">Unlock</button>
-  </div>
+        <!-- LOCAL LOGIN FIRST -->
+        <div id="local_login" class="local_login_container">
+            <h2>Local Login</h2>
+            <input class="login_field" id="local_user" type="text" placeholder="Local username">
+            <input class="login_field" id="local_pass" type="password" placeholder="Local password">
+            <button class="login_field" id="local_login_btn">Unlock</button>
+        </div>
 
-  <script src="login.js"></script>
-</body>
+        <!-- LN PAGE (HIDDEN UNTIL LOCAL LOGIN) -->
+        <div id="ln_page" style="display:none;">
+            <img src="./languagenut.jpeg" width='30%'>
+
+            <div id="login" class="overlay">
+                <input class="login_field" id="username_input" type="text" placeholder="username">
+                <input class="login_field" id="password_input" type="text" placeholder="password">
+                <button class="login_field" id="login_btn"> Log In </button>
+            </div>
+
+            <div id="hw_panel" class="overlay">
+                <h2>homeworks</h2>
+                <input type="checkbox" id="selectall">
+                <label for="selectall">select all</label>
+
+                <div id="hw_container" class="overflow_container"></div>
+                <button id="do_hw" style="margin: 2rem">DO THE HOMEWORK</button>
+            </div>
+
+            <div id="log_panel" style="right: 1em" class="overlay">
+                <h2>Logs</h2>
+                <div id="hw_bar" class="progress_bar"></div>
+                <br>
+                <div id="log_container" class="overflow_container"></div>
+            </div>
+
+            <dialog id="settings">
+                [Esc] to exit
+                <br>
+                Select the time you want your homework to appear to be done in:
+                <input type="range" min="-3" max="18" value="2" id="speed_slider" step="0.1">
+                <br/>
+                Current speed: <span id="speed_display"></span> 
+            </dialog>
+
+            <button id="settings_button" class="settings_button">Settings</button>
+        </div>
+
+        <script src="login.js"></script>
+        <script src="index.js"></script>
+    </body>
 </html>
