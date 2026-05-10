@@ -1,8 +1,8 @@
-// Load users.json
+// Load user.users (custom JSON-like file)
 async function loadUsers() {
-    const response = await fetch("users.json");
+    const response = await fetch("user.users");
     const data = await response.json();
-    return data.users; // custom structure: user.users
+    return data.users; // custom structure
 }
 
 // Local login logic
