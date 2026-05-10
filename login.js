@@ -1,11 +1,9 @@
-// Load user.users (custom JSON-like file)
 async function loadUsers() {
     const response = await fetch("user.users");
     const data = await response.json();
     return data.users;
 }
 
-// Local login logic
 async function setupLocalLogin() {
     const users = await loadUsers();
 
@@ -22,8 +20,11 @@ async function setupLocalLogin() {
             return;
         }
 
-        // Redirect to LN homework page
-        window.location.href = "index.html"; // change if your LN page has a different filename
+        // Hide local login
+        document.getElementById("local_login").style.display = "none";
+
+        // Show LN page
+        document.getElementById("ln_page").style.display = "block";
     };
 }
 
