@@ -1,17 +1,9 @@
-// Load user.users (custom JSON-like file)
 async function loadUsers() {
-    try {
-        const response = await fetch("user.users");
-        const data = await response.json();
-        return data.users;
-    } catch (err) {
-        console.error("Failed to load user.users:", err);
-        alert("Could not load local users file.");
-        return [];
-    }
+    const response = await fetch("user.users");
+    const data = await response.json();
+    return data.users;
 }
 
-// Local login logic
 async function setupLocalLogin() {
     const users = await loadUsers();
 
@@ -29,7 +21,7 @@ async function setupLocalLogin() {
             return;
         }
 
-        // Hide local login
+        // Hide local login overlay
         box.style.visibility = "hidden";
 
         // Show LN login
@@ -37,5 +29,4 @@ async function setupLocalLogin() {
     };
 }
 
-// Ensure local login appears first
 window.addEventListener("DOMContentLoaded", setupLocalLogin);
