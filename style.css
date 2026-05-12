@@ -1,30 +1,76 @@
-
+/* ---------------------------------------------------
+   FONT IMPORTS
+--------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
 
+/* ---------------------------------------------------
+   ROOT VARIABLES
+--------------------------------------------------- */
+:root {
+    --font-main: "Comic Sans MS", "Comic Sans", "Comic Neue", cursive;
+    --font-mono: "Space Mono", monospace;
+
+    --color-accent: #ff00ff;
+    --color-accent-light: rgba(255, 0, 255, 0.5);
+    --color-bg: #000;
+    --color-progress: #00ff00;
+
+    --radius: 0.75rem;
+    --transition-fast: 0.15s ease-in-out;
+}
 
 body {
-    font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", cursive;
+    font-family: var(--font-main);
     font-weight: 700;
     font-size: 1.05rem;
-    background-image: url("./hellfire.gif");
-    background-repeat: no-repeat;
-    background-size: 100%;
+
+    /* Removed hellfire.gif */
+    background: #000; /* or any colour you want */
+
+    margin: 0;
+    padding: 0;
+    color: white;
 }
 
+
+/* Smooth scroll everywhere */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ---------------------------------------------------
+   BUTTONS
+--------------------------------------------------- */
 button {
     font-family: inherit;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    border: 2px solid var(--color-accent);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition-fast);
 }
 
+button:hover {
+    background: var(--color-accent-light);
+    transform: scale(1.05);
+}
 
+/* ---------------------------------------------------
+   LAYOUT HELPERS
+--------------------------------------------------- */
 .login_field {
-  display: block;
+    display: block;
+    margin-bottom: 0.75rem;
 }
 
 div {
-  padding: 1em;
+    padding: 1em;
 }
 
+/* Settings button in corner */
 .settings_button {
     position: absolute;
     top: 0;
@@ -32,35 +78,82 @@ div {
     padding: 1rem;
 }
 
-
+/* ---------------------------------------------------
+   PROGRESS BAR
+--------------------------------------------------- */
 .progress_bar {
-  padding: 0px;
-  width: 0%;
-  height: 1rem;
-  background-color: #00ff00;
+    width: 0%;
+    height: 1rem;
+    background-color: var(--color-progress);
+    border-radius: var(--radius);
+    transition: width 0.3s ease-out;
 }
 
+/* ---------------------------------------------------
+   VISIBILITY HELPERS
+--------------------------------------------------- */
 .hideable {
-  display: none;
+    display: none !important;
 }
 
+/* ---------------------------------------------------
+   JSON SMALL TEXT
+--------------------------------------------------- */
 .json_small {
-  font-family: "Space Mono", serif;
-  font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.5rem;
+    border-radius: var(--radius);
 }
 
+/* ---------------------------------------------------
+   OVERLAY WINDOW
+--------------------------------------------------- */
 .overlay {
-  position: fixed;
-  border-radius: 1rem;
-  width: 45%; 
-  height: 70%;
-  background-color: rgba(255,0,255,0.5); /* Black background with opacity */
-  visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 45%;
+    height: 70%;
+    padding: 1rem;
+
+    background-color: var(--color-accent-light);
+    backdrop-filter: blur(6px);
+
+    border-radius: 1rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
 }
 
+/* When activated, add .active class */
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ---------------------------------------------------
+   SCROLLABLE CONTAINER
+--------------------------------------------------- */
 .overflow_container {
-  max-height: 16em;
-  overflow: scroll;
+    max-height: 16em;
+    overflow-y: auto;
+    padding-right: 0.5rem;
 }
 
+/* Custom scrollbar */
+.overflow_container::-webkit-scrollbar {
+    width: 8px;
+}
 
+.overflow_container::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border-radius: var(--radius);
+}
+
+.overflow_container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
