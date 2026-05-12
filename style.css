@@ -1,82 +1,66 @@
-.local_login_container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #0d0d0d;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap');
+
+
+body {
+    font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", cursive;
+    font-weight: 700;
+    font-size: 1.05rem;
+    background-image: url("./hellfire.gif");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
-.local_login_container h2 {
-  color: white;
-  margin-bottom: 1rem;
+button {
+    font-family: inherit;
+}
+
+
+.login_field {
+  display: block;
+}
+
+div {
+  padding: 1em;
+}
+
+.settings_button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+}
+
+
+.progress_bar {
+  padding: 0px;
+  width: 0%;
+  height: 1rem;
+  background-color: #00ff00;
+}
+
+.hideable {
+  display: none;
+}
+
+.json_small {
+  font-family: "Space Mono", serif;
+  font-size: 0.75rem;
 }
 
 .overlay {
   position: fixed;
-  top: 10%;
-  left: 5%;
-  width: 40%;
-  height: 75%;
-  background: rgba(255, 0, 255, 0.25);
   border-radius: 1rem;
-  padding: 1rem;
-  overflow: hidden;
-  visibility: visible;
-  transition: all 0.4s ease;
+  width: 45%; 
+  height: 70%;
+  background-color: rgba(255,0,255,0.5); /* Black background with opacity */
+  visibility: hidden;
 }
 
 .overflow_container {
   max-height: 16em;
-  overflow-y: auto;
-  padding-right: 0.5rem;
+  overflow: scroll;
 }
 
-.user_entry {
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0.3rem 0;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
-
-button {
-  background: #ff00ff;
-  color: white;
-  border: none;
-  border-radius: 0.4rem;
-  padding: 0.7rem 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #ff55ff;
-}
-
-.local_login_container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #0d0d0d;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.user_entry {
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0.3rem 0;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-}
 
