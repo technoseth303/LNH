@@ -1,7 +1,0 @@
-{
-  "users": [
-    { "username": "seth", "password": "1234", "admin": true },
-    { "username": "guest", "password": "guest", "admin": false }
-
-  ]
-}
